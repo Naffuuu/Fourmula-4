@@ -17,7 +17,7 @@ const STUDENT_MISSIONS = [
 ];
 
 const CAPTAIN_MISSIONS = [
-  { to: "/missions/seating", icon: Armchair, title: "Seat Planner", description: "Generate a line-of-sight-optimized seating chart.", accent: "primary" },
+  { to: "/missions/seating", icon: Armchair, title: "Anti-camouflage Seat Planner", description: "Generate a line-of-sight-optimized seating chart.", accent: "primary" },
   { to: "/missions/sos", icon: Siren, title: "SOS Console", description: "Live feed of incoming SOS flares from students.", accent: "coral" },
   { to: "/missions/whistleblower", icon: MessageSquareWarning, title: "Strike Review", description: "Review anonymous complaints and issue warnings.", accent: "coral" },
 ];
