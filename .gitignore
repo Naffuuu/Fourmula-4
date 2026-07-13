@@ -21,6 +21,7 @@ dist/
 
 # --- uploads / local storage ---
 backend/uploads/
+backend/dev.db
 uploads/
 
 # --- OS / editor ---
