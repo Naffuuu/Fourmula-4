@@ -17,13 +17,17 @@ A student-facing accountability platform built for **BAIUST Computer Club CSE Sp
 cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
 
-# 2. spin up mysql + backend + frontend
+# 2. use Docker-friendly MySQL settings in backend/.env
+#    (backend/.env is ignored by git so this can stay private)
+#    DATABASE_URL=mysql+aiomysql://akp_user:akp_password@localhost:3306/anti_kuddus_protocol
+
+# 3. spin up mysql + backend + frontend
 docker-compose up --build
 
-# 3. run migrations (first boot only)
+# 4. run migrations (first boot only)
 docker-compose exec backend alembic upgrade head
 
-# 4. seed demo data
+# 5. seed demo data
 docker-compose exec backend python -m app.db.seed
 
 # frontend: http://localhost:5173
