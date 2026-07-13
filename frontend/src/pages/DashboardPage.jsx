@@ -1,4 +1,5 @@
 import { MessageSquareWarning, Armchair, BookOpenCheck, Wallet, Siren, ShieldCheck } from "lucide-react";
+import { Link } from "react-router-dom";
 import PageWrapper from "../components/layout/PageWrapper";
 import Card from "../components/ui/Card";
 import StrikeMeter from "../components/ui/StrikeMeter";
@@ -44,15 +45,25 @@ export default function DashboardPage() {
 
       {!loading && summary && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-          <Card className="lg:col-span-1 flex flex-col items-center justify-center">
+          <Card as={Link} to="/missions/whistleblower" interactive className="lg:col-span-1 flex flex-col items-center justify-center">
             <StrikeMeter value={summary.strike_count} max={summary.strike_max} />
           </Card>
 
-          <Card className="lg:col-span-2">
+          <Card as={Link} to="/missions/sos" interactive className="lg:col-span-2">
             <h3 className="font-display font-semibold mb-4">Live status</h3>
             <div className="grid grid-cols-2 gap-6">
               <Stat label="Open SOS alerts" value={summary.open_sos_alerts} tone="coral" />
-              <Stat label="Days until next test" value={summary.days_until_test ?? "—"} tone="primary" />
+              <Stat
+                label="Next test"
+                value={
+                  summary.next_test_date
+                    ? summary.next_test_date
+                    : summary.days_until_test === null
+                    ? "—"
+                    : `${summary.days_until_test} days`
+                }
+                tone="primary"
+              />
               <div className="col-span-2">
                 <ProgressBar
                   value={summary.recent_complaints_count}

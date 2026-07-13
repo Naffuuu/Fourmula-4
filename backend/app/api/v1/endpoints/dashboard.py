@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user
 from app.db.session import get_db
-from app.models.complaint import Complaint, Strike
+from app.models.complaint import Complaint, ComplaintStatus, Strike
 from app.models.misc import SosAlert, SosStatus, SyllabusRequest
 from app.models.user import User
 from app.schemas.dashboard import DashboardSummary
@@ -21,8 +21,13 @@ async def get_dashboard_summary(current_user: User = Depends(get_current_user), 
     # Strike count: highest warning_level ever issued, capped at STRIKE_MAX.
     # (A school-wide counter for the hackathon demo — a real deployment would
     # scope this per-target-teacher rather than globally.)
-    strike_result = await db.execute(select(func.max(Strike.warning_level)))
-    strike_count = min(strike_result.scalar() or 0, STRIKE_MAX)
+    # Strike count now reflects the total number of open/under-review complaints
+    # rather than only captain-issued warning strikes. This gives users immediate
+    # feedback after filing a report.
+    complaint_result = await db.execute(
+        select(func.count()).select_from(Complaint).where(Complaint.status.in_([ComplaintStatus.open, ComplaintStatus.under_review]))
+    )
+    strike_count = min(complaint_result.scalar() or 0, STRIKE_MAX)
 
     open_sos_result = await db.execute(select(func.count()).select_from(SosAlert).where(SosAlert.status == SosStatus.active))
     open_sos_alerts = open_sos_result.scalar() or 0
@@ -47,6 +52,7 @@ async def get_dashboard_summary(current_user: User = Depends(get_current_user), 
         if test_date_str:
             test_date = date.fromisoformat(test_date_str)
             days_until_test = max((test_date - date.today()).days, 0)
+            next_test_date = test_date.isoformat()
 
     return DashboardSummary(
         strike_count=strike_count,
@@ -55,4 +61,5 @@ async def get_dashboard_summary(current_user: User = Depends(get_current_user), 
         recent_complaints_count=len(recent_complaints),
         recent_complaint_categories=categories,
         days_until_test=days_until_test,
+        next_test_date=next_test_date,
     )

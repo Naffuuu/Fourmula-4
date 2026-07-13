@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Paperclip, Send } from "lucide-react";
 import PageWrapper from "../../components/layout/PageWrapper";
 import Card, { CardHeader } from "../../components/ui/Card";
@@ -17,6 +18,7 @@ const CATEGORIES = [
 
 export default function WhistleblowerPage() {
   const { push } = useToast();
+  const navigate = useNavigate();
   const [category, setCategory] = useState(CATEGORIES[0].value);
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
@@ -45,7 +47,8 @@ export default function WhistleblowerPage() {
       setSubmitted(data);
       setDescription("");
       setFile(null);
-      push({ type: "success", message: "Complaint filed anonymously. Your identity is never attached to it." });
+      push({ type: "success", message: "Complaint received — dashboard warnings will update now." });
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       push({ type: "error", message: err.response?.data?.detail || "Could not submit complaint. Try again." });
     } finally {

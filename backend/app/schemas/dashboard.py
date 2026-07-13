@@ -9,3 +9,4 @@ class DashboardSummary(BaseModel):
     recent_complaints_capacity: int = 10
     recent_complaint_categories: list[str]
     days_until_test: int | None = None
+    next_test_date: str | None = None
