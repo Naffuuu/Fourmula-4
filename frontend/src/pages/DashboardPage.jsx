@@ -12,6 +12,7 @@ const STUDENT_MISSIONS = [
   { to: "/missions/whistleblower", icon: MessageSquareWarning, title: "Whistleblower", description: "File an anonymous complaint. Your identity is cryptographically protected.", accent: "coral" },
   { to: "/missions/sos", icon: Siren, title: "SOS Flare", description: "Send a real-time alert to on-duty captains.", accent: "coral" },
   { to: "/missions/factchecker", icon: ShieldCheck, title: "Fact-Checker", description: "Check a claimed rule against the seeded rulebook.", accent: "primary" },
+  { to: "/missions/seating", icon: Armchair, title: "Anti-camouflage Seat Planner", description: "Generate a line-of-sight-optimized seating chart.", accent: "primary" },
   { to: "/missions/ledger", icon: Wallet, title: "Tiffin Ledger", description: "See the running total of the corrupt economy.", accent: "warning" },
   { to: "/missions/syllabus", icon: BookOpenCheck, title: "Syllabus Negotiator", description: "AI-filter the bloated syllabus into what's actually examinable.", accent: "primary" },
 ];
