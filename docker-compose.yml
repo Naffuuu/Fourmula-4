@@ -1,0 +1,57 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: anti_kuddus_protocol
+      MYSQL_USER: akp_user
+      MYSQL_PASSWORD: akp_password
+      MYSQL_ROOT_PASSWORD: akp_root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pakp_root_password"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      # overrides .env's DATABASE_URL so it resolves the "mysql" service name
+      # inside the compose network, regardless of what's in .env for
+      # non-docker local runs.
+      DATABASE_URL: mysql+aiomysql://akp_user:akp_password@mysql:3306/anti_kuddus_protocol
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - uploads_data:/app/uploads
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    env_file:
+      - ./frontend/.env
+    environment:
+      VITE_API_PROXY_TARGET: http://backend:8000
+      VITE_WS_PROXY_TARGET: ws://backend:8000
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  mysql_data:
+  uploads_data:

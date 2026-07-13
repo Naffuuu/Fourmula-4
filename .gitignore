@@ -1,0 +1,32 @@
+# --- secrets: never committed, from hour 0 ---
+.env
+backend/.env
+frontend/.env
+*.pem
+*.key
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# --- node ---
+node_modules/
+dist/
+.vite/
+
+# --- uploads / local storage ---
+backend/uploads/
+uploads/
+
+# --- OS / editor ---
+.DS_Store
+.vscode/
+.idea/
+
+# --- logs ---
+*.log

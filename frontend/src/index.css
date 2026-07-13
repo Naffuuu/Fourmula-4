@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-paper bg-grain text-ink font-body antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display text-ink;
+  }
+
+  /* Visible keyboard focus everywhere, despite the vibrant palette */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-paper;
+  }
+
+  ::selection {
+    @apply bg-primary-200 text-ink;
+  }
+}
+
+@layer utilities {
+  .torn-edge {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='16' viewBox='0 0 400 16' preserveAspectRatio='none'%3E%3Cpath d='M0 8 L10 2 L20 10 L30 3 L40 9 L50 1 L60 11 L70 4 L80 8 L90 2 L100 10 L110 3 L120 9 L130 1 L140 11 L150 4 L160 8 L170 2 L180 10 L190 3 L200 9 L210 1 L220 11 L230 4 L240 8 L250 2 L260 10 L270 3 L280 9 L290 1 L300 11 L310 4 L320 8 L330 2 L340 10 L350 3 L360 9 L370 1 L380 11 L390 4 L400 8 L400 16 L0 16 Z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='16' viewBox='0 0 400 16' preserveAspectRatio='none'%3E%3Cpath d='M0 8 L10 2 L20 10 L30 3 L40 9 L50 1 L60 11 L70 4 L80 8 L90 2 L100 10 L110 3 L120 9 L130 1 L140 11 L150 4 L160 8 L170 2 L180 10 L190 3 L200 9 L210 1 L220 11 L230 4 L240 8 L250 2 L260 10 L270 3 L280 9 L290 1 L300 11 L310 4 L320 8 L330 2 L340 10 L350 3 L360 9 L370 1 L380 11 L390 4 L400 8 L400 16 L0 16 Z'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
