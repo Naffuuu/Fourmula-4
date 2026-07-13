@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import require_roles
+from app.api.deps import get_current_user
 from app.db.session import get_db
 from app.models.misc import SeatingLayout
-from app.models.user import User, UserRole
+from app.models.user import User
 from app.schemas.seating import SeatAssignment, SeatingRequest, SeatingResponse
 from app.services.seating_algorithm import generate_seating
 
@@ -14,7 +14,7 @@ router = APIRouter(prefix="/seating", tags=["seating"])
 @router.post("/generate", response_model=SeatingResponse, status_code=201)
 async def generate_seating_layout(
     payload: SeatingRequest,
-    current_user: User = Depends(require_roles(UserRole.second_captain, UserRole.third_captain)),
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     roster_dicts = [

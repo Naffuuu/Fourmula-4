@@ -29,10 +29,7 @@ export default function App() {
           <Route path="/missions/sos" element={<SosPage />} />
           <Route path="/missions/factchecker" element={<FactCheckerPage />} />
           <Route path="/missions/seating" element={<SeatingPage />} />
-        </Route>
 
-        <Route element={<ProtectedRoute allowedRoles={["second_captain", "third_captain"]} />}>
-          <Route path="/missions/seating" element={<SeatingPage />} />
         </Route>
 
         <Route path="/" element={<Navigate to="/dashboard" replace />} />

@@ -59,7 +59,9 @@ export default function SeatingPage() {
       setResult(data);
       push({ type: "success", message: "Seating chart generated." });
     } catch (err) {
-      push({ type: "error", message: err.response?.data?.detail?.[0]?.msg || "Could not generate seating chart." });
+      const detail = err?.response?.data?.detail;
+      const message = Array.isArray(detail) ? detail[0]?.msg || detail[0] : detail || "Could not generate seating chart.";
+      push({ type: "error", message });
     } finally {
       setSubmitting(false);
     }
