@@ -24,9 +24,14 @@ async def test_ledger_entry_round_trip(client):
         json={"type": "food", "amount": 1.0, "item_description": "Confiscated paratha"},
         headers=headers,
     )
+    await client.post(
+        "/api/v1/ledger",
+        json={"type": "food", "amount": 2.0, "item_description": "Confiscated snacks"},
+        headers=headers,
+    )
 
     summary = (await client.get("/api/v1/ledger", headers=headers)).json()
     assert summary["total_cash"] == 40.0
-    assert summary["total_food_items"] == 1
-    assert summary["caloric_intake_estimate_kcal"] > 0
-    assert len(summary["entries"]) == 2
+    assert summary["total_food_items"] == 3
+    assert summary["caloric_intake_estimate_kcal"] == 3 * 250.0
+    assert len(summary["entries"]) == 4

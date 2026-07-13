@@ -29,16 +29,36 @@ export default function LedgerPage() {
 
   const submit = async (e) => {
     e.preventDefault();
+
+    const parsedAmount = Number(amount);
+    if (!parsedAmount || parsedAmount <= 0) {
+      push({ type: "error", message: "Enter a positive amount or item count." });
+      return;
+    }
+
+    if (!description.trim()) {
+      push({ type: "error", message: "Add a description for the entry." });
+      return;
+    }
+
+    const normalizedAmount = type === "food" ? Math.max(1, Math.round(parsedAmount)) : parsedAmount;
+
     setSubmitting(true);
     try {
-      await api.post("/ledger", { type, amount: Number(amount) || 1, item_description: description });
+      await api.post("/ledger", {
+        type,
+        amount: normalizedAmount,
+        item_description: description.trim(),
+      });
       setAmount("");
       setDescription("");
       setModalOpen(false);
       push({ type: "success", message: "Entry logged." });
       load();
-    } catch {
-      push({ type: "error", message: "Could not log entry." });
+    } catch (err) {
+      const detail = err?.response?.data?.detail;
+      const message = Array.isArray(detail) ? detail[0]?.msg || detail[0] : detail || "Could not log entry.";
+      push({ type: "error", message });
     } finally {
       setSubmitting(false);
     }
@@ -119,6 +139,8 @@ export default function LedgerPage() {
           <Input
             label={type === "cash" ? "Amount (BDT)" : "Item count"}
             type="number"
+            step={type === "cash" ? "0.01" : "1"}
+            min={1}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />

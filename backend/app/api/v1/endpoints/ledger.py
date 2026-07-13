@@ -49,7 +49,7 @@ async def get_ledger(
     food_entries = [e for e in entries if e.type == LedgerEntryType.food]
 
     total_cash = sum(e.amount for e in cash_entries)
-    total_food_items = len(food_entries)
+    total_food_items = int(sum(e.amount for e in food_entries))
     caloric_intake_estimate = total_food_items * AVG_TIFFIN_ITEM_KCAL
 
     return LedgerSummary(
